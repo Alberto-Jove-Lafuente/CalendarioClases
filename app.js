@@ -15,15 +15,33 @@ function loadCalendar() {
     console.log("Cargando calendario...");
 
     const classes = JSON.parse(localStorage.getItem('classes')) || [];
-    console.log("Clases guardadas:", classes); // Verifica en la consola
+    console.log("Clases guardadas:", classes);
 
     const calendar = document.getElementById('calendar');
-    calendar.innerHTML = '';
+    calendar.innerHTML = ''; // Limpia el contenido anterior
+
+    console.log("Días en el mes:", daysInMonth);
+    console.log("Calendario generado:", calendar);
+
 
     const daysInMonth = new Date(selectedYear, selectedMonth + 1, 0).getDate();
 
     for (let day = 1; day <= daysInMonth; day++) {
-        let dayClasses = getClassesForDay(day);
+        // Crear un contenedor para el día
+        const dayCell = document.createElement('div');
+        dayCell.classList.add('calendar-day');
+        dayCell.id = `day-${day}`;
+        dayCell.innerHTML = `<strong>${day}</strong>`; // Mostrar el número del día
+
+        let dayClasses = classes.filter(cls => {
+            const clsDate = new Date(cls.date);
+            return clsDate.getFullYear() === selectedYear &&
+                   clsDate.getMonth() === selectedMonth &&
+                   clsDate.getDate() === day;
+        });
+
+        console.log(`Día ${day}:`, dayClasses); // Verificar clases por día
+
         let classList = document.createElement('div');
 
         dayClasses.forEach(cls => {
@@ -34,12 +52,11 @@ function loadCalendar() {
             classList.appendChild(classItem);
         });
 
-        const dayCell = document.getElementById(`day-${day}`);
-        if (dayCell) {
-            dayCell.appendChild(classList);
-        }
+        dayCell.appendChild(classList);
+        calendar.appendChild(dayCell);
     }
 }
+
 
 
 /*function loadCalendar() {
