@@ -140,10 +140,11 @@ document.getElementById('add-class-form').addEventListener('submit', (e) => {
 
     if (!studentName || !startTime || !endTime || !classDate) return;
 
+    let classes = JSON.parse(localStorage.getItem('classes')) || [];
+
     if (isRecurring) {
         addRecurringClasses(studentName, startTime, endTime, classDate, classType);
     } else {
-        let classes = JSON.parse(localStorage.getItem('classes')) || [];
         classes.push({
             date: classDate,
             name: studentName,
