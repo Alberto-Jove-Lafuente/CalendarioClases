@@ -134,19 +134,14 @@ button:hover {
     border: 1px solid #ccc;
 }
 
-/* Estilo botón eliminar */
-.delete-btn {
-    background-color: red;
-    color: white;
-    border: none;
-    cursor: pointer;
-    padding: 5px 10px;
-    border-radius: 3px;
-    font-size: 12px;
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-.delete-btn:hover {
-    background-color: darkred;
+.checkbox-container label {
+    margin: 0;
 }
 
 /* Responsividad */

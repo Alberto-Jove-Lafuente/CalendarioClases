@@ -51,7 +51,7 @@ function loadCalendar() {
                    clsDate.getDate() === day;
         });
 
-        // 🟢 ORDENAR LAS CLASES POR HORA DE INICIO
+        // ORDENAR LAS CLASES POR HORA DE INICIO
         dayClasses.sort((a, b) => a.start.localeCompare(b.start));
 
         console.log(`Día ${day} ordenado:`, dayClasses); // Verificar clases por día ordenados
@@ -88,6 +88,26 @@ function cleanOldClasses() {
     localStorage.setItem('classes', JSON.stringify(classes));
 }
 
+// Agregar clase y gestionar recurrencia
+function addRecurringClasses(studentName, startTime, endTime, classDate, classType) {
+    let classes = JSON.parse(localStorage.getItem('classes')) || [];
+    let currentDate = new Date(classDate);
+    const endDate = new Date('2025-07-01');
+
+    while (currentDate <= endDate) {
+        classes.push({
+            date: currentDate.toISOString().split('T')[0],
+            name: studentName,
+            start: startTime,
+            end: endTime,
+            type: classType
+        });
+        currentDate.setDate(currentDate.getDate() + 7); // Avanzar una semana
+    }
+    
+    localStorage.setItem('classes', JSON.stringify(classes));
+}
+
 // Manejo de cambio de mes
 document.getElementById('prev-month').addEventListener('click', () => {
     selectedMonth--;
@@ -116,18 +136,23 @@ document.getElementById('add-class-form').addEventListener('submit', (e) => {
     const endTime = document.getElementById('end-time').value;
     const classDate = document.getElementById('class-date').value; // Obtener la fecha seleccionada
     const classType = document.getElementById('class-type').value; // Nuevo campo
+    const isRecurring = document.getElementById('is-recurring').checked; // es recurrente la clase
 
     if (!studentName || !startTime || !endTime || !classDate) return;
 
-    const classes = JSON.parse(localStorage.getItem('classes')) || [];
-    const date = `${selectedYear}-${selectedMonth + 1}-${new Date().getDate()}`;
-    classes.push({
-        date: classDate,
-        name: studentName,
-        start: startTime,
-        end: endTime,
-        type: classType // Guardamos si es presencial u online
-    });
+    if (isRecurring) {
+        addRecurringClasses(studentName, startTime, endTime, classDate, classType);
+    } else {
+        let classes = JSON.parse(localStorage.getItem('classes')) || [];
+        classes.push({
+            date: classDate,
+            name: studentName,
+            start: startTime,
+            end: endTime,
+            type: classType
+        });
+        localStorage.setItem('classes', JSON.stringify(classes));
+    }
 
     localStorage.setItem('classes', JSON.stringify(classes));
     alert('Clase agregada');
