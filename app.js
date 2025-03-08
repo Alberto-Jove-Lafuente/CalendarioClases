@@ -5,18 +5,16 @@ let selectedYear = currentDate.getFullYear();
 
 // Función para generar un color único basado en el nombre del alumno
 function generateColorForStudent(name) {
-    let hash = 0;
-    for (let i = 0; i < name.length; i++) {
-        // Cálculo robusto del hash con una combinación de los caracteres del nombre
-        hash = Math.imul(31, hash) + name.charCodeAt(i); 
-    }
+    // Convertimos el nombre en un hash único usando una función de dispersión robusta
+    const hash = [...name].reduce((acc, char) => acc + char.charCodeAt(0), 0);
     
-    // Usamos el valor absoluto del hash para evitar valores negativos
-    const hue = Math.abs(hash) % 360; // Limitamos el valor de hue a 360 para obtener un color válido
-    const saturation = 70; // Saturación constante para colores vibrantes
-    const lightness = 60; // Luminosidad constante para mantener la claridad
-
-    // Devolvemos el color en formato HSL
+    // Aseguramos que el valor sea positivo y lo limitamos a 360 (máximo valor para 'hue' en HSL)
+    const hue = hash % 360;
+    
+    // Aseguramos una saturación y luminosidad constantes para una gama de colores vibrantes
+    const saturation = 70;
+    const lightness = 60;
+    
     return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
 }
 
