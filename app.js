@@ -69,11 +69,20 @@ function deleteClass(day, index) {
     let classes = JSON.parse(localStorage.getItem('classes')) || [];
     const dayString = `${selectedYear}-${selectedMonth + 1}-${day}`;
 
-    // Filtrar solo las clases de este día y eliminar la seleccionada
-    let updatedClasses = classes.filter(cls => cls.date !== dayString || classes.indexOf(cls) !== index);
+    // Filtrar solo las clases de ese día
+    let dayClasses = classes.filter(cls => cls.date === dayString);
 
+    // Eliminar la clase con el índice específico
+    dayClasses.splice(index, 1);
+
+    // Actualizar el array general
+    let updatedClasses = classes.filter(cls => cls.date !== dayString).concat(dayClasses);
+
+    // Guardar los cambios en localStorage
     localStorage.setItem('classes', JSON.stringify(updatedClasses));
-    loadCalendar(); // Recargar el calendario
+
+    // Volver a cargar el calendario
+    loadCalendar();
 }
 
 // Manejo de cambio de mes
