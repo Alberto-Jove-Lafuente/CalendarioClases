@@ -21,15 +21,21 @@
             <form id="add-class-form">
                 <label for="student-name">Nombre del alumno:</label>
                 <input type="text" id="student-name" required>
+
+                <label for="class-date">Fecha de la clase:</label>
+                <input type="date" id="class-date" required>
             
                 <label for="start-time">Hora de inicio:</label>
                 <input type="time" id="start-time" required>
             
                 <label for="end-time">Hora de fin:</label>
                 <input type="time" id="end-time" required>
-            
-                <label for="class-date">Fecha de la clase:</label>
-                <input type="date" id="class-date" required>
+
+                <label for="class-type">Tipo de clase:</label>
+                <select id="class-type">
+                    <option value="P">Presencial</option>
+                    <option value="O">Online</option>
+                </select>
             
                 <button type="submit">Agregar clase</button>
             </form>

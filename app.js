@@ -40,16 +40,10 @@ function loadCalendar() {
         
         dayClasses.forEach(cls => {
             const classItem = document.createElement('p');
-            classItem.textContent = `${cls.name} (${cls.start} - ${cls.end})`;
+            const classType = cls.type === 'O' ? '🟢 O' : '🔵 P'; // Iconos opcionales para mayor claridad
+            classItem.textContent = `${cls.name} (${cls.start} - ${cls.end}) [${classType}]`;
             classItem.style.backgroundColor = generateColorForStudent(cls.name);
-
-            // Botón para eliminar la clase
-            const deleteBtn = document.createElement('button');
-            deleteBtn.textContent = '❌';
-            deleteBtn.classList.add('delete-btn');
-            deleteBtn.onclick = () => deleteClass(day, index); // Llamar a la función de eliminación
-
-            classItem.appendChild(deleteBtn);
+        
             classList.appendChild(classItem);
         });
 
@@ -62,27 +56,6 @@ function loadCalendar() {
 function getClassesForDay(day) {
     const classes = JSON.parse(localStorage.getItem('classes')) || [];
     return classes.filter(cls => cls.date === `${selectedYear}-${selectedMonth + 1}-${day}`);
-}
-
-// Función para eliminar una clase
-function deleteClass(day, index) {
-    let classes = JSON.parse(localStorage.getItem('classes')) || [];
-    const dayString = `${selectedYear}-${selectedMonth + 1}-${day}`;
-
-    // Filtrar solo las clases de ese día
-    let dayClasses = classes.filter(cls => cls.date === dayString);
-
-    // Eliminar la clase con el índice específico
-    dayClasses.splice(index, 1);
-
-    // Actualizar el array general
-    let updatedClasses = classes.filter(cls => cls.date !== dayString).concat(dayClasses);
-
-    // Guardar los cambios en localStorage
-    localStorage.setItem('classes', JSON.stringify(updatedClasses));
-
-    // Volver a cargar el calendario
-    loadCalendar();
 }
 
 // Manejo de cambio de mes
@@ -112,6 +85,7 @@ document.getElementById('add-class-form').addEventListener('submit', (e) => {
     const startTime = document.getElementById('start-time').value;
     const endTime = document.getElementById('end-time').value;
     const classDate = document.getElementById('class-date').value; // Obtener la fecha seleccionada
+    const classType = document.getElementById('class-type').value; // Nuevo campo
 
     if (!studentName || !startTime || !endTime || !classDate) return;
 
@@ -121,7 +95,8 @@ document.getElementById('add-class-form').addEventListener('submit', (e) => {
         date: classDate,
         name: studentName,
         start: startTime,
-        end: endTime
+        end: endTime,
+        type: classType // Guardamos si es presencial u online
     });
 
     localStorage.setItem('classes', JSON.stringify(classes));
