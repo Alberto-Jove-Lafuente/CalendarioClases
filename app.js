@@ -12,6 +12,37 @@ function generateColorForStudent(name) {
 
 // Función para cargar el calendario
 function loadCalendar() {
+    console.log("Cargando calendario...");
+
+    const classes = JSON.parse(localStorage.getItem('classes')) || [];
+    console.log("Clases guardadas:", classes); // Verifica en la consola
+
+    const calendar = document.getElementById('calendar');
+    calendar.innerHTML = '';
+
+    const daysInMonth = new Date(selectedYear, selectedMonth + 1, 0).getDate();
+
+    for (let day = 1; day <= daysInMonth; day++) {
+        let dayClasses = getClassesForDay(day);
+        let classList = document.createElement('div');
+
+        dayClasses.forEach(cls => {
+            const classItem = document.createElement('p');
+            const classType = cls.type === 'O' ? '🟢 O' : '🔵 P';
+            classItem.textContent = `${cls.name} (${cls.start} - ${cls.end}) [${classType}]`;
+            classItem.style.backgroundColor = generateColorForStudent(cls.name);
+            classList.appendChild(classItem);
+        });
+
+        const dayCell = document.getElementById(`day-${day}`);
+        if (dayCell) {
+            dayCell.appendChild(classList);
+        }
+    }
+}
+
+
+/*function loadCalendar() {
     const calendar = document.getElementById('calendar');
     calendar.innerHTML = '';
     const monthName = document.getElementById('month-name');
@@ -50,7 +81,7 @@ function loadCalendar() {
         dayCell.appendChild(classList);
         calendar.appendChild(dayCell);
     }
-}
+}*/
 
 // Función para obtener las clases de un día específico
 function getClassesForDay(day) {
@@ -105,5 +136,6 @@ document.getElementById('add-class-form').addEventListener('submit', (e) => {
     loadCalendar(); // Recargar el calendario para mostrar la nueva clase
 });
 
-// Inicializar el calendario
-loadCalendar();
+document.addEventListener('DOMContentLoaded', () => {
+    loadCalendar(); // Cargar las clases al abrir la página
+});
