@@ -41,7 +41,15 @@ function loadCalendar() {
         dayClasses.forEach(cls => {
             const classItem = document.createElement('p');
             classItem.textContent = `${cls.name} (${cls.start} - ${cls.end})`;
-            classItem.style.backgroundColor = generateColorForStudent(cls.name); // Aplicamos el color único
+            classItem.style.backgroundColor = generateColorForStudent(cls.name);
+
+            // Botón para eliminar la clase
+            const deleteBtn = document.createElement('button');
+            deleteBtn.textContent = '❌';
+            deleteBtn.classList.add('delete-btn');
+            deleteBtn.onclick = () => deleteClass(day, index); // Llamar a la función de eliminación
+
+            classItem.appendChild(deleteBtn);
             classList.appendChild(classItem);
         });
 
@@ -54,6 +62,18 @@ function loadCalendar() {
 function getClassesForDay(day) {
     const classes = JSON.parse(localStorage.getItem('classes')) || [];
     return classes.filter(cls => cls.date === `${selectedYear}-${selectedMonth + 1}-${day}`);
+}
+
+// Función para eliminar una clase
+function deleteClass(day, index) {
+    let classes = JSON.parse(localStorage.getItem('classes')) || [];
+    const dayString = `${selectedYear}-${selectedMonth + 1}-${day}`;
+
+    // Filtrar solo las clases de este día y eliminar la seleccionada
+    let updatedClasses = classes.filter(cls => cls.date !== dayString || classes.indexOf(cls) !== index);
+
+    localStorage.setItem('classes', JSON.stringify(updatedClasses));
+    loadCalendar(); // Recargar el calendario
 }
 
 // Manejo de cambio de mes
