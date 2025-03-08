@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendario de Clases</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="calendar-container">
+        <header>
+            <button id="prev-month">‹</button>
+            <h1 id="month-name">Marzo 2025</h1>
+            <button id="next-month">›</button>
+        </header>
+        
+        <div id="calendar"></div>
+
+        <div id="class-form">
+            <h2>Agregar clase</h2>
+            <form id="add-class-form">
+                <input type="text" id="student-name" placeholder="Nombre del alumno" required>
+                <input type="time" id="start-time" required>
+                <input type="time" id="end-time" required>
+                <button type="submit">Agregar clase</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

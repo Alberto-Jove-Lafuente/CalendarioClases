@@ -1,0 +1,9 @@
+{
+    "name": "Calendario de Clases",
+    "short_name": "Calendario Clases",
+    "description": "Una aplicación para gestionar clases y horarios",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#4CAF50"
+}
