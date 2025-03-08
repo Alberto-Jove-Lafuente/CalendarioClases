@@ -7,10 +7,17 @@ let selectedYear = currentDate.getFullYear();
 function generateColorForStudent(name) {
     let hash = 0;
     for (let i = 0; i < name.length; i++) {
-        hash = Math.imul(31, hash) + name.charCodeAt(i); // Usamos imul para evitar desbordamientos
+        // Cálculo robusto del hash con una combinación de los caracteres del nombre
+        hash = Math.imul(31, hash) + name.charCodeAt(i); 
     }
+    
+    // Usamos el valor absoluto del hash para evitar valores negativos
     const hue = Math.abs(hash) % 360; // Limitamos el valor de hue a 360 para obtener un color válido
-    return `hsl(${hue}, 70%, 60%)`; // Usamos HSL para generar colores más agradables
+    const saturation = 70; // Saturación constante para colores vibrantes
+    const lightness = 60; // Luminosidad constante para mantener la claridad
+
+    // Devolvemos el color en formato HSL
+    return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
 }
 
 // Función para cargar el calendario
