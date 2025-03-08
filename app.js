@@ -20,11 +20,10 @@ function loadCalendar() {
     const calendar = document.getElementById('calendar');
     calendar.innerHTML = ''; // Limpia el contenido anterior
 
+    const daysInMonth = new Date(selectedYear, selectedMonth + 1, 0).getDate();
+
     console.log("Días en el mes:", daysInMonth);
     console.log("Calendario generado:", calendar);
-
-
-    const daysInMonth = new Date(selectedYear, selectedMonth + 1, 0).getDate();
 
     for (let day = 1; day <= daysInMonth; day++) {
         // Crear un contenedor para el día
