@@ -62,14 +62,17 @@ button:hover {
 
 /* Días del mes */
 #calendar div {
-    padding: 20px;
-    min-height: 120px; /* Espacio más amplio */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 10px;
+    min-height: 120px;
     text-align: center;
     background-color: #f9f9f9;
     border-radius: 4px;
     cursor: pointer;
     position: relative;
-    overflow: hidden;
 }
 
 #calendar div:hover {
@@ -83,7 +86,29 @@ button:hover {
     border-radius: 4px;
     font-size: 14px;
     margin-top: 5px;
+    display: flex;
+    flex-wrap: wrap; /* Para que las clases no se desborden */
+    gap: 5px;
 }
+
+.class-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #4CAF50;
+    color: white;
+    padding: 5px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+    overflow: hidden; /* Oculta el exceso de texto */
+    text-overflow: ellipsis; /* Añade "..." si el texto es muy largo */
+    max-width: 100%; /* Que no sobrepase el contenedor */
+}
+
+.class-card.presencial { background-color: #2196F3; } /* Azul */
+.class-card.online { background-color: #4CAF50; } /* Verde */
+.class-card.otro { background-color: #F44336; } /* Rojo */
 
 /* Formulario */
 #class-form {
