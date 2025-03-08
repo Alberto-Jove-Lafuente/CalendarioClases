@@ -96,7 +96,7 @@ function addRecurringClasses(studentName, startTime, endTime, classDate, classTy
 
     while (currentDate <= endDate) {
         classes.push({
-            date: currentDate.toISOString().split('T')[0],
+            date: `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')}`,
             name: studentName,
             start: startTime,
             end: endTime,
@@ -155,7 +155,6 @@ document.getElementById('add-class-form').addEventListener('submit', (e) => {
         localStorage.setItem('classes', JSON.stringify(classes));
     }
 
-    localStorage.setItem('classes', JSON.stringify(classes));
     alert('Clase agregada');
     document.getElementById('add-class-form').reset();
     loadCalendar(); // Recargar el calendario para mostrar la nueva clase
