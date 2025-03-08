@@ -5,17 +5,19 @@ let selectedYear = currentDate.getFullYear();
 
 // Función para generar un color único basado en el nombre del alumno
 function generateColorForStudent(name) {
-    // Convertimos el nombre en un hash único usando una función de dispersión robusta
-    const hash = [...name].reduce((acc, char) => acc + char.charCodeAt(0), 0);
-    
-    // Aseguramos que el valor sea positivo y lo limitamos a 360 (máximo valor para 'hue' en HSL)
-    const hue = hash % 360;
-    
-    // Aseguramos una saturación y luminosidad constantes para una gama de colores vibrantes
-    const saturation = 70;
-    const lightness = 60;
-    
-    return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+    // Convertimos el nombre en un valor único numérico
+    let uniqueValue = 0;
+    for (let i = 0; i < name.length; i++) {
+        uniqueValue += name.charCodeAt(i);
+    }
+
+    // Generamos tres componentes de color (rojo, verde, azul) en base al valor único
+    const red = (uniqueValue * 123) % 256; // Múltiplo para dispersar el valor
+    const green = (uniqueValue * 234) % 256; // Otro múltiplo para dispersar
+    const blue = (uniqueValue * 345) % 256; // Otro múltiplo para obtener un valor único de color
+
+    // Generamos un color RGB
+    return `rgb(${red}, ${green}, ${blue})`;
 }
 
 // Función para cargar el calendario
