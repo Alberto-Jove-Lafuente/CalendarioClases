@@ -82,13 +82,14 @@ document.getElementById('add-class-form').addEventListener('submit', (e) => {
     const studentName = document.getElementById('student-name').value;
     const startTime = document.getElementById('start-time').value;
     const endTime = document.getElementById('end-time').value;
+    const classDate = document.getElementById('class-date').value; // Obtener la fecha seleccionada
 
-    if (!studentName || !startTime || !endTime) return;
+    if (!studentName || !startTime || !endTime || !classDate) return;
 
     const classes = JSON.parse(localStorage.getItem('classes')) || [];
     const date = `${selectedYear}-${selectedMonth + 1}-${new Date().getDate()}`;
     classes.push({
-        date,
+        date: classDate,
         name: studentName,
         start: startTime,
         end: endTime

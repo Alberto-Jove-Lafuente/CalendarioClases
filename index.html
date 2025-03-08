@@ -19,9 +19,18 @@
         <div id="class-form">
             <h2>Agregar clase</h2>
             <form id="add-class-form">
-                <input type="text" id="student-name" placeholder="Nombre del alumno" required>
+                <label for="student-name">Nombre del alumno:</label>
+                <input type="text" id="student-name" required>
+            
+                <label for="start-time">Hora de inicio:</label>
                 <input type="time" id="start-time" required>
+            
+                <label for="end-time">Hora de fin:</label>
                 <input type="time" id="end-time" required>
+            
+                <label for="class-date">Fecha de la clase:</label>
+                <input type="date" id="class-date" required>
+            
                 <button type="submit">Agregar clase</button>
             </form>
         </div>
