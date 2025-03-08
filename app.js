@@ -5,14 +5,19 @@ let selectedYear = currentDate.getFullYear();
 
 // Función para generar un color único basado en el nombre del alumno
 function generateColorForStudent(name) {
-    const hash = Array.from(name).reduce((acc, char) => acc + char.charCodeAt(0), 0);
-    const hue = hash % 360; // Limitamos el valor de hue a 360 para obtener un color válido
+    let hash = 0;
+    for (let i = 0; i < name.length; i++) {
+        hash = Math.imul(31, hash) + name.charCodeAt(i); // Usamos imul para evitar desbordamientos
+    }
+    const hue = Math.abs(hash) % 360; // Limitamos el valor de hue a 360 para obtener un color válido
     return `hsl(${hue}, 70%, 60%)`; // Usamos HSL para generar colores más agradables
 }
 
 // Función para cargar el calendario
 function loadCalendar() {
     console.log("Cargando calendario...");
+
+    cleanOldClasses();
 
     const classes = JSON.parse(localStorage.getItem('classes')) || [];
     console.log("Clases guardadas:", classes);
@@ -39,7 +44,10 @@ function loadCalendar() {
                    clsDate.getDate() === day;
         });
 
-        console.log(`Día ${day}:`, dayClasses); // Verificar clases por día
+        // 🟢 ORDENAR LAS CLASES POR HORA DE INICIO
+        dayClasses.sort((a, b) => a.start.localeCompare(b.start));
+
+        console.log(`Día ${day} ordenado:`, dayClasses); // Verificar clases por día ordenados
 
         let classList = document.createElement('div');
 
@@ -56,53 +64,21 @@ function loadCalendar() {
     }
 }
 
-
-
-/*function loadCalendar() {
-    const calendar = document.getElementById('calendar');
-    calendar.innerHTML = '';
-    const monthName = document.getElementById('month-name');
-    monthName.textContent = `${monthNames[selectedMonth]} ${selectedYear}`;
-
-    // Primer día del mes
-    const firstDay = new Date(selectedYear, selectedMonth, 1).getDay();
-    const daysInMonth = new Date(selectedYear, selectedMonth + 1, 0).getDate();
-
-    // Crear celdas vacías hasta el primer día del mes
-    for (let i = 0; i < firstDay; i++) {
-        const emptyCell = document.createElement('div');
-        calendar.appendChild(emptyCell);
-    }
-
-    // Crear celdas para cada día del mes
-    for (let day = 1; day <= daysInMonth; day++) {
-        const dayCell = document.createElement('div');
-        dayCell.textContent = day;
-        dayCell.classList.add('day-cell');
-        
-        // Mostrar las clases debajo de cada día
-        const dayClasses = getClassesForDay(day);
-        const classList = document.createElement('div');
-        classList.classList.add('day-class-list');
-        
-        dayClasses.forEach(cls => {
-            const classItem = document.createElement('p');
-            const classType = cls.type === 'O' ? '🟢 O' : '🔵 P'; // Iconos opcionales para mayor claridad
-            classItem.textContent = `${cls.name} (${cls.start} - ${cls.end}) [${classType}]`;
-            classItem.style.backgroundColor = generateColorForStudent(cls.name);
-        
-            classList.appendChild(classItem);
-        });
-
-        dayCell.appendChild(classList);
-        calendar.appendChild(dayCell);
-    }
-}*/
-
 // Función para obtener las clases de un día específico
 function getClassesForDay(day) {
     const classes = JSON.parse(localStorage.getItem('classes')) || [];
     return classes.filter(cls => cls.date === `${selectedYear}-${selectedMonth + 1}-${day}`);
+}
+
+// Función para eliminar clases antiguas para evitar perdida de datos futuros
+function cleanOldClasses() {
+    let classes = JSON.parse(localStorage.getItem('classes')) || [];
+    const today = new Date();
+
+    // Filtrar solo las clases que son de hoy o futuras
+    classes = classes.filter(cls => new Date(cls.date) >= today);
+
+    localStorage.setItem('classes', JSON.stringify(classes));
 }
 
 // Manejo de cambio de mes
