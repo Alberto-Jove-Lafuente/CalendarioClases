@@ -155,15 +155,32 @@ document.querySelector('#calendar').addEventListener('click', (e) => {
         const confirmation = confirm('¿Estás seguro de que deseas eliminar esta clase?');
         if (confirmation) {
             const clase = e.target;
+            const classText = clase.innerText.trim(); // Asegura que el texto está limpio de espacios extra
             const dayCell = clase.closest('.calendar-day');
             const dayNumber = dayCell.querySelector('strong').textContent;
             const date = `${selectedYear}-${String(selectedMonth + 1).padStart(2, '0')}-${String(dayNumber).padStart(2, '0')}`;
 
             let classes = JSON.parse(localStorage.getItem('classes')) || [];
-            const nuevasClases = classes.filter(c => !(c.date === date && c.name === clase.textContent.split(' ')[0]));
+
+             // Actualizamos la regex para capturar el icono antes del tipo (O/P)
+             const classInfo = classText.match(/^(.*?) \((\d{2}:\d{2}) - (\d{2}:\d{2})\) \[.* (O|P)\]/);
+            if (!classInfo) {
+                console.error('Formato inesperado de clase:', classText); // Ver contenido exacto para depurar
+                alert('No se pudo identificar la clase correctamente.');
+                return;
+            }
+
+            const [_, name, start, end, type] = classInfo;
+
+            const nuevasClases = classes.filter(c => 
+                !(c.date === date && c.name === name && c.start === start && c.end === end && c.type.startsWith(type))
+            );
+
             localStorage.setItem('classes', JSON.stringify(nuevasClases));
 
             clase.remove();
+
+            alert('Clase eliminada correctamente');
         }
         
     }
