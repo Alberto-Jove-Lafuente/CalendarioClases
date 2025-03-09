@@ -5,7 +5,7 @@ let selectedMonth = currentDate.getMonth();
 let selectedYear = currentDate.getFullYear();
 
 // Función para generar un color único basado en el nombre del alumno
-function generateColorForStudent(name) {
+/*function generateColorForStudent(name) {
     // Convertimos el nombre en un valor único numérico
     let uniqueValue = 0;
     for (let i = 0; i < name.length; i++) {
@@ -19,7 +19,19 @@ function generateColorForStudent(name) {
 
     // Generamos un color RGB
     return `rgb(${red}, ${green}, ${blue})`;
-}
+
+    let hash = 0;
+    for (let i = 0; i < name.length; i++) {
+        hash = name.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    
+    // Asegura un rango amplio de tonos (de 0 a 360 grados en el círculo cromático)
+    const hue = Math.abs(hash % 360);
+    const saturation = 70 + (hash % 30); // Entre 70% y 100% para colores vibrantes
+    const lightness = 50 + (hash % 20);  // Entre 50% y 70% para evitar colores muy claros/oscuros
+
+    return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+}*/
 
 // Función para cargar el calendario
 function loadCalendar() {
@@ -73,7 +85,7 @@ function loadCalendar() {
                 const classItem = document.createElement('p');
                 const classType = cls.type === 'O' ? '🟢 O' : '🔵 P';
                 classItem.textContent = `${cls.name} (${cls.start} - ${cls.end}) [${classType}]`;
-                classItem.style.backgroundColor = generateColorForStudent(cls.name);
+                classItem.style.backgroundColor = cls.color || '#ccc'; // Usa el color guardado o un gris por defecto
                 classList.appendChild(classItem);
             });
 
@@ -107,7 +119,7 @@ function cleanOldClasses() {
 }
 
 // Agregar clase y gestionar recurrencia
-function addRecurringClasses(studentName, startTime, endTime, classDate, classType) {
+function addRecurringClasses(studentName, startTime, endTime, classDate, classType, color) {
     let classes = JSON.parse(localStorage.getItem('classes')) || [];
     let currentDate = new Date(classDate);
     const endDate = new Date('2025-07-01');
@@ -118,7 +130,8 @@ function addRecurringClasses(studentName, startTime, endTime, classDate, classTy
             name: studentName,
             start: startTime,
             end: endTime,
-            type: classType
+            type: classType,
+            color: color
         });
         currentDate.setDate(currentDate.getDate() + 7); // Avanzar una semana
     }
@@ -155,20 +168,22 @@ document.getElementById('add-class-form').addEventListener('submit', (e) => {
     const classDate = document.getElementById('class-date').value; // Obtener la fecha seleccionada
     const classType = document.getElementById('class-type').value; // Nuevo campo
     const isRecurring = document.getElementById('is-recurring').checked; // es recurrente la clase
+    const color = document.getElementById('class-color').value; // se obtiene el color
 
     if (!studentName || !startTime || !endTime || !classDate) return;
 
     let classes = JSON.parse(localStorage.getItem('classes')) || [];
 
     if (isRecurring) {
-        addRecurringClasses(studentName, startTime, endTime, classDate, classType);
+        addRecurringClasses(studentName, startTime, endTime, classDate, classType, color);
     } else {
         classes.push({
             date: classDate,
             name: studentName,
             start: startTime,
             end: endTime,
-            type: classType
+            type: classType,
+            color: color
         });
         localStorage.setItem('classes', JSON.stringify(classes));
     }

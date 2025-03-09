@@ -142,15 +142,36 @@ button:hover {
     border: 1px solid #ccc;
 }
 
-.checkbox-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+#is-recurring {
+    margin-left: 10px;
 }
 
-.checkbox-container label {
-    margin: 0;
+#class-color {
+    display: block;
+    width: 50px;
+    height: 50px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 10px;
 }
+
+#class-color:focus {
+    outline: 2px solid #4CAF50;
+}
+
+#is-recurring, #class-color {
+    margin-bottom: 20px;
+}
+
+.checkbox-container, #class-color {
+    padding: 10px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 
 /* Responsividad */
 @media (max-width: 768px) {
