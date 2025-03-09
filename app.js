@@ -1,4 +1,5 @@
 const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+const dayNames = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
 let currentDate = new Date();
 let selectedMonth = currentDate.getMonth();
 let selectedYear = currentDate.getFullYear();
@@ -33,42 +34,59 @@ function loadCalendar() {
     calendar.innerHTML = ''; // Limpia el contenido anterior
 
     const daysInMonth = new Date(selectedYear, selectedMonth + 1, 0).getDate();
+    const firstDayOfMonth = new Date(selectedYear, selectedMonth, 1).getDay();
+    const offset = (firstDayOfMonth === 0 ? 6 : firstDayOfMonth - 1); // Ajustar para que lunes sea el primer día
+
+    // Crear array de 42 días (6 filas x 7 columnas)
+    const days = Array.from({ length: 42 }, (_, i) => {
+        const dayNumber = i >= offset && i < offset + daysInMonth ? i - offset + 1 : null;
+        return { date: dayNumber };
+    });
 
     console.log("Días en el mes:", daysInMonth);
     console.log("Calendario generado:", calendar);
 
-    for (let day = 1; day <= daysInMonth; day++) {
+    console.log("Días generados:", days);
+
+    days.forEach(({ date }) => {
         // Crear un contenedor para el día
         const dayCell = document.createElement('div');
         dayCell.classList.add('calendar-day');
-        dayCell.id = `day-${day}`;
-        dayCell.innerHTML = `<strong>${day}</strong>`; // Mostrar el número del día
 
-        let dayClasses = classes.filter(cls => {
-            const clsDate = new Date(cls.date);
-            return clsDate.getFullYear() === selectedYear &&
-                   clsDate.getMonth() === selectedMonth &&
-                   clsDate.getDate() === day;
-        });
+        if (date) {
+            dayCell.innerHTML = `<strong>${date}</strong>`; // Día del mes
+            const dayClasses = classes.filter(cls => {
+                const clsDate = new Date(cls.date);
+                return clsDate.getFullYear() === selectedYear &&
+                       clsDate.getMonth() === selectedMonth &&
+                       clsDate.getDate() === date;
+            });
 
-        // ORDENAR LAS CLASES POR HORA DE INICIO
-        dayClasses.sort((a, b) => a.start.localeCompare(b.start));
+            // ORDENAR LAS CLASES POR HORA DE INICIO
+            dayClasses.sort((a, b) => a.start.localeCompare(b.start));
 
-        console.log(`Día ${day} ordenado:`, dayClasses); // Verificar clases por día ordenados
+            console.log(`Día ${date} ordenado:`, dayClasses); // Verificar clases por día ordenados
 
-        let classList = document.createElement('div');
+            const classList = document.createElement('div');
 
-        dayClasses.forEach(cls => {
-            const classItem = document.createElement('p');
-            const classType = cls.type === 'O' ? '🟢 O' : '🔵 P';
-            classItem.textContent = `${cls.name} (${cls.start} - ${cls.end}) [${classType}]`;
-            classItem.style.backgroundColor = generateColorForStudent(cls.name);
-            classList.appendChild(classItem);
-        });
+            dayClasses.forEach(cls => {
+                const classItem = document.createElement('p');
+                const classType = cls.type === 'O' ? '🟢 O' : '🔵 P';
+                classItem.textContent = `${cls.name} (${cls.start} - ${cls.end}) [${classType}]`;
+                classItem.style.backgroundColor = generateColorForStudent(cls.name);
+                classList.appendChild(classItem);
+            });
 
-        dayCell.appendChild(classList);
+            dayCell.appendChild(classList);
+
+        }
+
         calendar.appendChild(dayCell);
-    }
+    });
+
+     // 👉 Actualizar el mes y el año en el encabezado
+     const monthName = monthNames[selectedMonth];
+     document.getElementById('month-name').textContent = `${monthName} ${selectedYear}`;
 }
 
 // Función para obtener las clases de un día específico

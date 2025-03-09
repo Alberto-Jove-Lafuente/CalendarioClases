@@ -44,12 +44,12 @@ button:hover {
     background-color: #45a049;
 }
 
-/* Calendario */
-#calendar {
+/* Días de la semana */
+#weekdays {
     display: grid;
-    grid-template-columns: repeat(7, 1fr); /* 7 días de la semana */
+    grid-template-columns: repeat(7, 1fr);
     gap: 10px;
-    width: 100%;
+    margin-bottom: 10px;
 }
 
 .day-header {
@@ -58,6 +58,14 @@ button:hover {
     padding: 10px;
     background-color: #ddd;
     border-radius: 4px;
+}
+
+/* Calendario */
+#calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); /* 7 días de la semana */
+    gap: 10px;
+    width: 100%;
 }
 
 /* Días del mes */
