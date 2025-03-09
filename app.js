@@ -83,6 +83,7 @@ function loadCalendar() {
 
             dayClasses.forEach(cls => {
                 const classItem = document.createElement('p');
+                classItem.classList.add('class-card'); // Añadir clase para los estilos
                 const classType = cls.type === 'O' ? '🟢 O' : '🔵 P';
                 classItem.textContent = `${cls.name} (${cls.start} - ${cls.end}) [${classType}]`;
                 classItem.style.backgroundColor = cls.color || '#ccc'; // Usa el color guardado o un gris por defecto

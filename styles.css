@@ -88,6 +88,7 @@ button:hover {
 }
 
 /* Tarjetas de clase */
+/* MODIFICACIÓN: Ajuste del espacio entre clases, bordes negros y redondeados */
 .day-class-list {
     background-color: #e0f7fa;
     padding: 8px;
@@ -97,6 +98,8 @@ button:hover {
     display: flex;
     flex-wrap: wrap; /* Para que las clases no se desborden */
     gap: 5px;
+    flex-direction: column; /* Para apilar las clases verticalmente */
+    gap: 3px; /* Margen mínimo entre clases */
 }
 
 .class-card {
@@ -105,13 +108,16 @@ button:hover {
     justify-content: space-between;
     background-color: #4CAF50;
     color: white;
-    padding: 5px 8px;
-    border-radius: 4px;
+    padding: 2px 4px;
+    border: 2px solid black; /* Añadido borde negro */
+    border-radius: 8px; /* Bordes más redondeados */
     font-size: 12px;
     white-space: nowrap; /* Evita que el texto se divida en varias líneas */
     overflow: hidden; /* Oculta el exceso de texto */
     text-overflow: ellipsis; /* Añade "..." si el texto es muy largo */
     max-width: 100%; /* Que no sobrepase el contenedor */
+    margin-bottom: 3px; /* Separación mínima entre clases */
+    margin-top: 3px;
 }
 
 .class-card.presencial { background-color: #2196F3; } /* Azul */
