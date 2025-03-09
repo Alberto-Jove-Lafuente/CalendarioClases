@@ -3,6 +3,7 @@ const dayNames = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado
 let currentDate = new Date();
 let selectedMonth = currentDate.getMonth();
 let selectedYear = currentDate.getFullYear();
+let editMode = false; // Modo edición añadido
 
 // Función para generar un color único basado en el nombre del alumno
 /*function generateColorForStudent(name) {
@@ -139,6 +140,34 @@ function addRecurringClasses(studentName, startTime, endTime, classDate, classTy
     
     localStorage.setItem('classes', JSON.stringify(classes));
 }
+
+// Alternar el modo edición
+document.querySelector('#toggle-edit').addEventListener('click', () => {
+    editMode = !editMode;
+    document.querySelector('#toggle-edit').textContent = editMode ? 'Salir del modo edición' : 'Modo edición';
+    document.querySelector('#toggle-edit').classList.toggle('active', editMode);
+});
+
+// Eliminar clase al hacer clic (solo si el modo edición está activo)
+document.querySelector('#calendar').addEventListener('click', (e) => {
+    
+    if (editMode && e.target.classList.contains('class-card')) {
+        const confirmation = confirm('¿Estás seguro de que deseas eliminar esta clase?');
+        if (confirmation) {
+            const clase = e.target;
+            const dayCell = clase.closest('.calendar-day');
+            const dayNumber = dayCell.querySelector('strong').textContent;
+            const date = `${selectedYear}-${String(selectedMonth + 1).padStart(2, '0')}-${String(dayNumber).padStart(2, '0')}`;
+
+            let classes = JSON.parse(localStorage.getItem('classes')) || [];
+            const nuevasClases = classes.filter(c => !(c.date === date && c.name === clase.textContent.split(' ')[0]));
+            localStorage.setItem('classes', JSON.stringify(nuevasClases));
+
+            clase.remove();
+        }
+        
+    }
+});
 
 // Manejo de cambio de mes
 document.getElementById('prev-month').addEventListener('click', () => {

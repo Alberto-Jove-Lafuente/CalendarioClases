@@ -178,6 +178,13 @@ button:hover {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+/* se cambia el estilo del boton de edicion cuando esta activado */
+#toggle-edit.active {
+    background-color: #f04e4e; /* Un rojo suave */
+    color: white;
+    border: 2px solid black;
+    font-weight: bold;
+}
 
 /* Responsividad */
 @media (max-width: 768px) {
